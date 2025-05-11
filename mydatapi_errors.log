@@ -1,0 +1,90 @@
+2025-05-11 12:14:14 - Error: { "statusCode": 500, "message": "Internal server error", "activityId": "e541c171-0f8d-42c0-817c-75ce00f61ac5" }
+Payload: {
+    "invoices": [
+        {
+            "invoice": {
+                "issuer": {
+                    "vatNumber": "134125385",
+                    "country": "GR",
+                    "branch": 0
+                },
+                "counterpart": {
+                    "vatNumber": null,
+                    "country": "GR",
+                    "branch": 0,
+                    "name": "",
+                    "address": {
+                        "street": "",
+                        "number": "",
+                        "postalCode": "",
+                        "city": ""
+                    }
+                },
+                "invoiceHeader": {
+                    "series": "A",
+                    "aa": 1,
+                    "issueDate": "2025-05-11",
+                    "invoiceType": "1.1",
+                    "currency": "EUR"
+                },
+                "paymentMethods": [
+                    {
+                        "type": 3,
+                        "amount": 117
+                    }
+                ],
+                "invoiceDetails": [
+                    {
+                        "lineNumber": 1,
+                        "netValue": 100,
+                        "vatCategory": 2,
+                        "vatAmount": 13,
+                        "incomeClassification": [
+                            {
+                                "classificationType": "E3_561_001",
+                                "classificationCategory": "category1_1",
+                                "amount": 100
+                            }
+                        ]
+                    },
+                    {
+                        "lineNumber": 2,
+                        "netValue": 4,
+                        "vatCategory": 7,
+                        "vatAmount": 0,
+                        "incomeClassification": [
+                            {
+                                "classificationType": "E3_561_005",
+                                "classificationCategory": "category1_5",
+                                "amount": 4
+                            }
+                        ]
+                    }
+                ],
+                "invoiceSummary": {
+                    "totalNetValue": 104,
+                    "totalVatAmount": 13,
+                    "totalWithheldAmount": 0,
+                    "totalFeesAmount": 0,
+                    "totalStampDutyAmount": 0,
+                    "totalOtherTaxesAmount": 4,
+                    "totalDeductionsAmount": 0,
+                    "totalGrossValue": 117,
+                    "incomeClassification": [
+                        {
+                            "classificationType": "E3_561_001",
+                            "classificationCategory": "category1_1",
+                            "amount": 100
+                        },
+                        {
+                            "classificationType": "E3_561_005",
+                            "classificationCategory": "category1_5",
+                            "amount": 4
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+Detailed Errors: 
