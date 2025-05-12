@@ -2,7 +2,8 @@
   "require": {
     "ext-curl": "*",
     "ext-json": "*",
-    "guzzlehttp/guzzle": "^7.9"
+    "guzzlehttp/guzzle": "^7.9",
+    "firebed/aade-mydata": "^5.5"
   }
   ,
   "require-dev": {

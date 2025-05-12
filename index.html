@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Invoice Form for myDATA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-[70em]">
+    <h1 class="text-2xl font-bold text-center text-gray-700 mb-8">Απλή Φόρμα Τιμολογίου (myDATA)</h1>
+
+    <form action="send_invoice.php" method="POST">
+        <fieldset class="mb-6 border border-gray-300 p-4 rounded-md">
+            <legend class="text-lg font-semibold text-gray-600 px-2">Στοιχεία Εκδότη</legend>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                <div>
+                    <label for="issuer_vat" class="block text-sm font-medium text-gray-700">ΑΦΜ Εκδότη:</label>
+                    <input type="text" id="issuer_vat" name="issuer_vat" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="π.χ. 999999999">
+                </div>
+                <div>
+                    <label for="issuer_country" class="block text-sm font-medium text-gray-700">Χώρα Εκδότη (ISO Code):</label>
+                    <input type="text" id="issuer_country" name="issuer_country" value="GR" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="issuer_branch" class="block text-sm font-medium text-gray-700">Υποκατάστημα Εκδότη:</label>
+                    <input type="number" id="issuer_branch" name="issuer_branch" value="0" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="0 για έδρα">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-6 border border-gray-300 p-4 rounded-md">
+            <legend class="text-lg font-semibold text-gray-600 px-2">Στοιχεία Αντισυμβαλλόμενου (Λήπτη)</legend>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                <div>
+                    <label for="counterpart_vat" class="block text-sm font-medium text-gray-700">ΑΦΜ Λήπτη:</label>
+                    <input type="text" id="counterpart_vat" name="counterpart_vat" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="π.χ. 888888888">
+                </div>
+                <div>
+                    <label for="counterpart_country" class="block text-sm font-medium text-gray-700">Χώρα Λήπτη (ISO Code):</label>
+                    <input type="text" id="counterpart_country" name="counterpart_country" value="GR" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="counterpart_name" class="block text-sm font-medium text-gray-700">Όνομα/Επωνυμία Λήπτη:</label>
+                    <input type="text" id="counterpart_name" name="counterpart_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Προαιρετικό">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-6 border border-gray-300 p-4 rounded-md">
+            <legend class="text-lg font-semibold text-gray-600 px-2">Στοιχεία Τιμολογίου</legend>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                <div>
+                    <label for="invoice_series" class="block text-sm font-medium text-gray-700">Σειρά:</label>
+                    <input type="text" id="invoice_series" name="invoice_series" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="π.χ. A">
+                </div>
+                <div>
+                    <label for="invoice_aa" class="block text-sm font-medium text-gray-700">Αύξων Αριθμός:</label>
+                    <input type="number" id="invoice_aa" name="invoice_aa" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="π.χ. 101">
+                </div>
+                <div>
+                    <label for="invoice_issue_date" class="block text-sm font-medium text-gray-700">Ημερομηνία Έκδοσης:</label>
+                    <input type="date" id="invoice_issue_date" name="invoice_issue_date" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="invoice_type" class="block text-sm font-medium text-gray-700">Τύπος Παραστατικού:</label>
+                    <select id="invoice_type" name="invoice_type" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="1.1">1.1 - Τιμολόγιο Πώλησης</option>
+                        <option value="2.1">2.1 - Τιμολόγιο Παροχής Υπηρεσιών</option>
+                        <option value="11.1">11.1 - Απόδειξη Λιανικής Πώλησης</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="currency" class="block text-sm font-medium text-gray-700">Νόμισμα:</label>
+                    <input type="text" id="currency" name="currency" value="EUR" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-6 border border-gray-300 p-4 rounded-md">
+            <legend class="text-lg font-semibold text-gray-600 px-2">Γραμμή Τιμολογίου (1)</legend>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
+                <div>
+                    <label for="line_net_value" class="block text-sm font-medium text-gray-700">Καθαρή Αξία:</label>
+                    <input type="number" step="0.01" id="line_net_value" name="line_net_value" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="π.χ. 100.00">
+                </div>
+                <div>
+                    <label for="line_vat_category" class="block text-sm font-medium text-gray-700">Κατηγορία ΦΠΑ (%):</label>
+                    <select id="line_vat_category" name="line_vat_category" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="1">24% (Κανονικός)</option>
+                        <option value="2">13% (Μειωμένος)</option>
+                        <option value="3">6% (Υπερμειωμένος)</option>
+                        <option value="7">0% (Χωρίς ΦΠΑ / Απαλλασσόμενο)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="line_vat_amount" class="block text-sm font-medium text-gray-700">Ποσό ΦΠΑ:</label>
+                    <input type="number" step="0.01" id="line_vat_amount" name="line_vat_amount" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="π.χ. 24.00">
+                </div>
+                <div>
+                    <label for="line_description" class="block text-sm font-medium text-gray-700">Περιγραφή Είδους/Υπηρεσίας:</label>
+                    <input type="text" id="line_description" name="line_description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Προαιρετικό">
+                </div>
+            </div>
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="income_classification_type" class="block text-sm font-medium text-gray-700">Κωδικός Ε3 (π.χ. E3_561_001):</label>
+                    <input type="text" id="income_classification_type" name="income_classification_type" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="E3_561_001">
+                </div>
+                <div>
+                    <label for="income_classification_category" class="block text-sm font-medium text-gray-700">Κατηγορία Ε3 (π.χ. category1_2):</label>
+                    <input type="text" id="income_classification_category" name="income_classification_category" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="category1_2">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="mb-6 border border-gray-300 p-4 rounded-md">
+            <legend class="text-lg font-semibold text-gray-600 px-2">Σύνολα</legend>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                <div>
+                    <label for="total_net_value" class="block text-sm font-medium text-gray-700">Σύνολο Καθαρής Αξίας:</label>
+                    <input type="number" step="0.01" id="total_net_value" name="total_net_value" required class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm sm:text-sm" placeholder="π.χ. 100.00">
+                </div>
+                <div>
+                    <label for="total_vat_amount" class="block text-sm font-medium text-gray-700">Σύνολο ΦΠΑ:</label>
+                    <input type="number" step="0.01" id="total_vat_amount" name="total_vat_amount" required class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm sm:text-sm" placeholder="π.χ. 24.00">
+                </div>
+                <div>
+                    <label for="total_gross_value" class="block text-sm font-medium text-gray-700">Συνολική Αξία (Μεικτή):</label>
+                    <input type="number" step="0.01" id="total_gross_value" name="total_gross_value" required class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm sm:text-sm" placeholder="π.χ. 124.00">
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="mt-8 flex justify-end">
+            <button type="submit" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                Υποβολή Τιμολογίου (Ενδεικτικό)
+            </button>
+        </div>
+    </form>
+    <p class="text-xs text-gray-500 mt-6 text-center">
+        <strong>Σημείωση:</strong> Αυτή η φόρμα είναι απλοποιημένη. Η πραγματική διαβίβαση στο myDATA απαιτεί πλήρη στοιχεία παραστατικού, χαρακτηρισμούς εσόδων, και χρήση κατάλληλης βιβλιοθήκης PHP και διαπιστευτηρίων myDATA.
+    </p>
+</div>
+<script>
+  const netValueInput = document.getElementById('line_net_value');
+  const vatAmountInput = document.getElementById('line_vat_amount');
+  const totalNetInput = document.getElementById('total_net_value');
+  const totalVatInput = document.getElementById('total_vat_amount');
+  const totalGrossInput = document.getElementById('total_gross_value');
+
+  function calculateTotals() {
+    const net = parseFloat(netValueInput.value) || 0;
+    const vat = parseFloat(vatAmountInput.value) || 0;
+
+    totalNetInput.value = net.toFixed(2);
+    totalVatInput.value = vat.toFixed(2);
+    totalGrossInput.value = (net + vat).toFixed(2);
+  }
+
+  netValueInput.addEventListener('input', calculateTotals);
+  vatAmountInput.addEventListener('input', calculateTotals);
+
+  const vatCategorySelect = document.getElementById('line_vat_category');
+  vatCategorySelect.addEventListener('change', autoCalculateVat);
+  netValueInput.addEventListener('input', autoCalculateVat);
+
+  function autoCalculateVat() {
+    const net = parseFloat(netValueInput.value) || 0;
+    const vatCategory = vatCategorySelect.value;
+    let vatRate = 0;
+
+    switch(vatCategory) {
+      case '1': vatRate = 0.24; break;
+      case '2': vatRate = 0.13; break;
+      case '3': vatRate = 0.06; break;
+      case '7': vatRate = 0.00; break;
+    }
+    const vat = net * vatRate;
+    vatAmountInput.value = vat.toFixed(2);
+    calculateTotals();
+  }
+
+  document.getElementById('invoice_issue_date').valueAsDate = new Date();
+</script>
+</body>
+</html>
