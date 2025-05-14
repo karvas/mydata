@@ -54,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $counterpart = new Counterpart();
         $counterpart->setVatNumber($counterpartVat);
         $counterpart->setCountry($counterpartCountry);
+        $counterpart->setBranch(0);
 
         $header = new InvoiceHeader();
         $header->setSeries($invoiceSeries);
@@ -85,23 +86,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $invoiceSummary = new InvoiceSummary();
         $invoiceSummary->setTotalNetValue((float)$totalNetValue);
         $invoiceSummary->setTotalVatAmount((float)$totalVatAmount);
+        $invoiceSummary->setTotalWithheldAmount(0.0);
+        $invoiceSummary->setTotalFeesAmount(0.0);
+        $invoiceSummary->setTotalStampDutyAmount(0.0);
+        $invoiceSummary->setTotalOtherTaxesAmount(0.0);
+        $invoiceSummary->setTotalDeductionsAmount(0.0);
         $invoiceSummary->setTotalGrossValue((float)$totalGrossValue);
         $invoice->setInvoiceSummary($invoiceSummary);
 
         $request = new SendInvoices();
-        $response = $request->handle($invoice);
+        $responseDoc = $request->handle($invoice);
 
-        if ($response->isSuccessful()) {
-            $index = $response->getIndex();
-            $uid = $response->getInvoiceUid();
-            $mark = $response->getInvoiceMark();
-            $cancelledByMark = $response->getCancellationMark();
-            $qrUrl = $response->getQrUrl();
-            print_r(compact('index', 'uid', 'mark', 'cancelledByMark', 'qrUrl'));
-        } else {
-            foreach ($response->getErrors() as $error) {
-                $errors[$response->getIndex()][] = $error->getCode() . ': ' . $error->getMessage();
+        $processedAResponse = false;
+        foreach ($responseDoc as $individualResponse) {
+            $processedAResponse = true;
+            if ($individualResponse->isSuccessful()) {
+                $index = $individualResponse->getIndex();
+                $uid = $individualResponse->getInvoiceUid();
+                $mark = $individualResponse->getInvoiceMark();
+                $cancelledByMark = $individualResponse->getCancellationMark();
+                $qrUrl = $individualResponse->getQrUrl();
+                echo "Invoice submitted successfully!\n";
+                print_r(compact('index', 'uid', 'mark', 'cancelledByMark', 'qrUrl'));
+            } else {
+                echo "Invoice submission failed.\n";
+                echo "Status Code: " . $individualResponse->getStatusCode() . "\n";
+                $errors = [];
+                if ($individualResponse->getErrors()) {
+                    foreach ($individualResponse->getErrors() as $error) {
+                        $errorMsg = $error->getCode() . ': ' . $error->getMessage();
+                        $responseIndex = $individualResponse->getIndex() ?? 'N/A';
+                        $errors[$responseIndex][] = $errorMsg;
+                        echo "Error: " . $errorMsg . "\n";
+                    }
+                }
             }
+        }
+
+        if (!$processedAResponse) {
+            echo "No response data found within ResponseDoc.\n";
         }
 
     } catch (MyDataConnectionException $connectionException) {
